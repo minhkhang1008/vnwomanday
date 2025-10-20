@@ -1,73 +1,47 @@
-# React + TypeScript + Vite
+# 🌸 Vườn Hoa Lời Chúc 20/10
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Một món quà nhỏ nhân dịp **20/10 – Ngày Phụ Nữ Việt Nam**
 
-Currently, two official plugins are available:
+Trang web này được tạo ra như một **vườn hoa ảo**, nơi mỗi lần bạn chạm vào màn hình là một **bông hoa nở** cùng lời chúc ý nghĩa 💖
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✨ Tính năng chính
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🌼 **Chạm để nở hoa:** Mỗi cú chạm là một bông hoa mới cùng lời chúc ngẫu nhiên.
+- 💗 **Hiện tất cả hoa cùng lúc:** Một bó hoa hình **trái tim** xuất hiện rực rỡ giữa màn hình.
+- 🎵 **Nhạc nền YouTube:** Tự động phát bài hát mặc định khi vào trang. Có thể dán link YouTube để đổi bài.
+- 📱 **Tối ưu cho Mobile:** Hiệu ứng mượt mà, nhẹ, có haptic rung nhẹ khi tương tác.
+- 👩‍🎨 **Hiệu ứng động:** Hoa, cánh rơi, ánh sáng, nhạc.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 👣 Cách trải nghiệm
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Mở trang web: [https://vnwomanday.vercel.app](https://vnwomanday.vercel.app)  
+2. Bật âm thanh và cảm nhận 🌈  
+3. Chạm vào màn hình để gieo hoa  
+4. Nhấn nút “Hiện tất cả bông hoa cùng lúc” để thấy điều bất ngờ 💐
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 💻 Tác giả
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Nguyen Hoang Minh Khang**  
+> [GitHub: minhkhang1008](https://github.com/minhkhang1008)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## ⚙️ Tech Stack
+
+- **Frontend:** React + TypeScript + Vite  
+- **Styling:** TailwindCSS  
+- **Animation:** Framer Motion  
+- **Icons:** Lucide React  
+- **Audio:** YouTube IFrame API  
+- **Deployment:** Vercel  
+
+---
+
+## 🪪 License
+[MIT LICENSE](https://github.com/minhkhang1008/vnwomanday/blob/main/LICENSE)
