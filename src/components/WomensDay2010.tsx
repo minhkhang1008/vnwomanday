@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, PartyPopper } from "lucide-react";
+import { PartyPopper } from "lucide-react";
 
 const compliments = [
   "Tớ chúc các bạn nữ luôn rạng rỡ!",
@@ -101,7 +101,7 @@ function ComplimentTickerInline() {
   );
 }
 
-// --- fix vị trí stage ---
+// --- stage metrics (fix lệch click/pattern) ---
 function getStageMetrics(el: HTMLDivElement) {
   const rect = el.getBoundingClientRect();
   const cs = getComputedStyle(el);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Disc3, Pause, Play, Volume2, Link2, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import YouTubeAudio, { type YouTubeAudioRef } from "./YouTubeAudio";
@@ -86,7 +86,7 @@ export default function AudioCenter() {
         }`}
       >
         <Disc3 className="h-7 w-7" />
-        <style>{`.animate-spin-slow{animation:spin 3.6s linear infinite}@keyframes spin{from{transform:rotate(0…{animation:spin 3.6s linear infinite}@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
+        <style>{`.animate-spin-slow{animation:spin 3.6s linear infinite}@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
       </button>
 
       {/* Hidden YouTube backend */}
