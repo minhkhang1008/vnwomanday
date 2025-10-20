@@ -7,8 +7,8 @@ const compliments = [
   "Mỗi ngày đều xinh đẹp và giỏi giang!",
   "Học thật tốt, điểm thi thật cao!",
   "Luôn được yêu thương và trân trọng!",
-  "Hạnh phúc ngập tràn!",
   "20/10 thật rực rỡ nha!",
+  "Hạnh phúc ngập tràn!",
 ];
 
 const hsl = (h:number,s:number,l:number)=>`hsl(${h} ${s}% ${l}%)`;
@@ -100,24 +100,37 @@ function ComplimentTickerInline() {
     </div>
   );
 }
-function heartPoints(n: number, width: number, height: number) {
+
+// --- fix vị trí stage ---
+function getStageMetrics(el: HTMLDivElement) {
+  const rect = el.getBoundingClientRect();
+  const cs = getComputedStyle(el);
+  const padL = parseFloat(cs.paddingLeft || "0");
+  const padR = parseFloat(cs.paddingRight || "0");
+  const padT = parseFloat(cs.paddingTop || "0");
+  const padB = parseFloat(cs.paddingBottom || "0");
+  const innerW = rect.width - padL - padR;
+  const innerH = rect.height - padT - padB;
+  return { rect, padL, padR, padT, padB, innerW, innerH };
+}
+
+function heartPoints(n: number, innerW: number, innerH: number, padL: number, padT: number) {
   const pts: {x:number;y:number;}[] = [];
-  const scale = Math.min(width, height) * 0.035; 
-  const cx = width / 2, cy = height / 2 + Math.min(width, height)*0.02;
+  const scale = Math.min(innerW, innerH) * 0.035;
+  const cx = padL + innerW / 2;
+  const cy = padT + innerH / 2 + Math.min(innerW, innerH) * 0.02;
   for (let k = 0; k < n; k++) {
-    const t = (Math.PI * 2) * (k / n); 
+    const t = (Math.PI * 2) * (k / n);
     const x = 16 * Math.sin(t) ** 3;
     const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-    pts.push({
-      x: cx + x * scale + rnd(-6, 6), 
-      y: cy - y * scale + rnd(-6, 6),
-    });
+    pts.push({ x: cx + x * scale + rnd(-4, 4), y: cy - y * scale + rnd(-4, 4) });
   }
   return pts;
 }
 
 function vibrate(pattern: number | number[]) {
   if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+    // @ts-ignore
     navigator.vibrate(pattern);
   }
 }
@@ -128,24 +141,26 @@ export default function WomensDay2010() {
   const stageRef = useRef<HTMLDivElement>(null);
 
   const onStageClick = useCallback((e: React.MouseEvent) => {
-    const rect = stageRef.current!.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const el = stageRef.current!;
+    const { rect, padL, padT } = getStageMetrics(el);
+    const x = e.clientX - rect.left - padL;
+    const y = e.clientY - rect.top - padT;
     const hue = rnd(300, 360); const msg = pick(compliments);
     const id = Date.now() + Math.random();
     setBlooms(b => [...b, { id, x, y, hue, msg }]);
-    vibrate([4, 10, 6]); 
+    vibrate([4, 10, 6]);
     setTimeout(()=>setBlooms(b=>b.filter(it=>it.id!==id)), 2400);
   }, []);
 
   const burstPattern = () => {
-    const rect = stageRef.current!.getBoundingClientRect();
+    const el = stageRef.current!;
+    const { rect, padL, padT, innerW, innerH } = getStageMetrics(el);
     const count = isMobile ? 28 : 44;
-    const pts = heartPoints(count, rect.width, rect.height);
+    const pts = heartPoints(count, innerW, innerH, padL, padT);
     const news = pts.map(p => ({
       id: Date.now()+Math.random(),
-      x: Math.min(rect.width-20, Math.max(20, p.x)),
-      y: Math.min(rect.height-20, Math.max(20, p.y)),
+      x: Math.min(rect.width - padL - 20, Math.max(padL + 20, p.x)),
+      y: Math.min(rect.height - padT - 20, Math.max(padT + 20, p.y)),
       hue: rnd(300, 360),
       msg: pick(compliments),
     }));
@@ -156,7 +171,7 @@ export default function WomensDay2010() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[radial-gradient(60%_60%_at_50%_0%,_rgba(255,255,255,0.15),_rgba(255,255,255,0)_60%),_linear-gradient(120deg,_#ef5da8_0%,_#a78bfa_45%,_#60a5fa_100%)] text-white">
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-3 md:px-4 py-10">
+      <div className="relative z-20 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-3 md:px-4 py-10 pb-24 md:pb-10">
         <header className="mb-6 md:mb-8 text-center">
           <motion.h1
             initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
@@ -164,25 +179,23 @@ export default function WomensDay2010() {
             className="title-fx font-extrabold"
             style={{ fontSize: "clamp(28px, 5.2vw, 56px)", lineHeight: 1.1 }}
           >
-            20/10 - Ngày Phụ Nữ Việt Nam
+            20/10 — Ngày của các bạn nữ
           </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 18 }}
             className="mt-2 text-white/90 text-sm md:text-lg"
           >
-            Chạm vào màn hình để gieo một bông hoa nhé
+            Bầu trời hôm nay nở hoa vì các bạn. Chạm để gieo một bông nhé!
           </motion.p>
         </header>
 
-        {}
         <div
           ref={stageRef}
           onClick={onStageClick}
           className="relative z-20 mt-1 flex w-full items-center justify-center rounded-3xl border border-white/15 bg-white/5 p-2 md:p-3 backdrop-blur-md"
           style={{ height: isMobile ? "54vh" : "60vh", cursor: "crosshair" }}
         >
-          <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(40%_60%_at_50%_45%,_rgba(255,255,255,0.15),_rgba(255,255,255,0)_70%)]" />
           <AnimatePresence>
             {blooms.map((b) => (
               <motion.div key={b.id}
@@ -203,19 +216,8 @@ export default function WomensDay2010() {
               </motion.div>
             ))}
           </AnimatePresence>
-
-          {}
-          <div className="pointer-events-none absolute inset-0">
-            {Array.from({ length: isMobile ? 8 : 12 }).map((_, i) => (
-              <motion.div key={i} className="absolute opacity-[0.12]" style={{ left: `${(i*83)%100}%`, top: `${(i*41)%100}%` }}
-                animate={{ y: [0, -20, 0] }} transition={{ duration: 6 + (i % 5), repeat: Infinity, ease: "easeInOut" }}>
-                <Heart className="h-7 w-7 md:h-8 md:w-8" />
-              </motion.div>
-            ))}
-          </div>
         </div>
 
-        {}
         <div className="mt-4 md:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
           <ComplimentTickerInline />
           <button
@@ -226,19 +228,12 @@ export default function WomensDay2010() {
           </button>
         </div>
       </div>
-
-      {}
       <PetalRain enabled={true} light={isMobile} />
 
-      {}
       <div className="fixed left-3 bottom-2 z-50 text-[11px] md:text-xs text-white/80">
         author: <span className="font-semibold">Nguyen Hoang Minh Khang</span>
         {" "}(Github: <a className="underline hover:opacity-90" href="https://github.com/minhkhang1008" target="_blank" rel="noreferrer">minhkhang1008</a>)
       </div>
-
-      <svg className="pointer-events-none absolute bottom-0 left-0 right-0 z-0" viewBox="0 0 1440 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 120L60 112C120 104 240 88 360 88C480 88 600 104 720 120C840 136 960 152 1080 152C1200 152 1320 136 1380 128L1440 120V180H1380C1320 180 1200 180 1080 180C960 180 840 180 720 180C600 180 480 180 360 180C240 180 120 180 60 180H0V120Z" fill="rgba(255,255,255,0.12)"/>
-      </svg>
     </div>
   );
 }
