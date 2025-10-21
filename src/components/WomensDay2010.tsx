@@ -186,7 +186,7 @@ export default function WomensDay2010() {
             transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 18 }}
             className="mt-2 text-white/90 text-sm md:text-lg"
           >
-            Bầu trời hôm nay nở hoa vì các bạn. Chạm để gieo một bông nhé!
+            Chạm vào màn hình để gieo một bông hoa nhé!
           </motion.p>
         </header>
 
