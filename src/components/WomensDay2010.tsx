@@ -179,7 +179,7 @@ export default function WomensDay2010() {
             className="title-fx font-extrabold"
             style={{ fontSize: "clamp(28px, 5.2vw, 56px)", lineHeight: 1.1 }}
           >
-            20/10 — Ngày của các bạn nữ
+            20/10 — Ngày Phụ nữ Việt Nam
           </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
